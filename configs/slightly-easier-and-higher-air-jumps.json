@@ -1,0 +1,54 @@
+{
+  "format": "jump-lab/1",
+  "name": "slightly easier and higher air jumps",
+  "units": {
+    "length": "cells",
+    "time": "seconds"
+  },
+  "params": {
+    "jump_distance": 5,
+    "ground_accel_time": 0,
+    "ground_decel_time": 0,
+    "air_accel_time": 0,
+    "air_decel_time": 0,
+    "jump_height": 4.3,
+    "jump_rise_time": 0.4,
+    "jump_fall_time": 0.28,
+    "jump_cut": 1,
+    "max_fall_speed": 80,
+    "apex_threshold": 0,
+    "apex_gravity_scale": 1,
+    "coyote_time": 0.07,
+    "jump_buffer_time": 0,
+    "air_jumps": 1,
+    "air_jump_height": 3.5,
+    "air_jump_rise_time": 0.3,
+    "air_jump_redirect": true,
+    "dash_enabled": true,
+    "dash_distance": 3.2,
+    "dash_time": 0.12,
+    "dash_cooldown": 0.8,
+    "air_dashes": 1,
+    "dash_lift": 1,
+    "dash_vertical_resume": 0,
+    "dash_exit_speed": 0,
+    "dash_jump_cancel": false,
+    "dash_jump_carry": 0.5,
+    "dash_refills_air_jumps": false,
+    "carry_decay_time": 0.2
+  },
+  "derived": {
+    "walk_speed": 7.3529,
+    "jump_speed": 21.5,
+    "rise_gravity": 53.75,
+    "fall_gravity": 109.6939,
+    "air_jump_speed": 23.3333,
+    "air_rise_gravity": 77.7778,
+    "dash_speed": 26.6667
+  },
+  "lab": {
+    "tick_rate": 60,
+    "body_width": 0.56,
+    "body_height": 1.2
+  }
+}

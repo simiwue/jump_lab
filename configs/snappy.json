@@ -1,0 +1,51 @@
+{
+  "format": "jump-lab/1",
+  "name": "Snappy",
+  "note": "Short rise, fast fall, a little momentum, generous assists.",
+  "units": {
+    "length": "cells",
+    "time": "seconds"
+  },
+  "params": {
+    "jump_distance": 4.5,
+    "ground_accel_time": 0.05,
+    "ground_decel_time": 0.04,
+    "air_accel_time": 0.1,
+    "air_decel_time": 0.12,
+    "jump_height": 3.5,
+    "jump_rise_time": 0.28,
+    "jump_fall_time": 0.2,
+    "jump_cut": 0.6,
+    "max_fall_speed": 35,
+    "apex_threshold": 0,
+    "apex_gravity_scale": 1,
+    "coyote_time": 0.1,
+    "jump_buffer_time": 0.12,
+    "air_jumps": 1,
+    "air_jump_height": 2,
+    "air_jump_rise_time": 0.22,
+    "air_jump_redirect": true,
+    "dash_enabled": true,
+    "dash_distance": 3.5,
+    "dash_time": 0.14,
+    "dash_cooldown": 0.3,
+    "air_dashes": 1,
+    "dash_lift": 0,
+    "dash_vertical_resume": 0,
+    "dash_exit_speed": 0.4,
+    "dash_jump_cancel": true,
+    "dash_jump_carry": 0.6,
+    "dash_refills_air_jumps": false,
+    "carry_decay_time": 0.25
+  },
+  "derived": {
+    "walk_speed": 9.375,
+    "jump_speed": 25,
+    "rise_gravity": 89.2857,
+    "fall_gravity": 175,
+    "air_jump_speed": 18.1818,
+    "air_rise_gravity": 82.6446,
+    "dash_speed": 25
+  },
+  "lab": {}
+}

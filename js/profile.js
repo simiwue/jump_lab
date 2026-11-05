@@ -150,6 +150,11 @@ export function toFile(name, params, lab = {}) {
   };
 }
 
+// The file name a profile called `name` gets.
+export function slug(name) {
+  return (name || "jump").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "jump";
+}
+
 export function fromFile(data) {
   if (!data || typeof data !== "object") throw new Error("not a JSON object");
   if (data.format && !String(data.format).startsWith("jump-lab/")) {

@@ -1,5 +1,6 @@
-import { SCHEMA, derive, toFile, fromFile, normalize } from "./profile.js";
+import { SCHEMA, derive, toFile, fromFile, normalize, slug } from "./profile.js";
 import { PRESETS } from "./presets.js";
+import { loadConfigs, fileFor, saveConfig } from "./configs.js";
 import { Motor } from "./motor.js";
 import { Body } from "./body.js";
 import { Course } from "./course.js";
@@ -22,6 +23,7 @@ const FALL_LIMIT = 8; // cells below the course
 const lab = { ...LAB_DEFAULTS, ...load(STORE.lab) };
 let profile = loadProfile();
 let course = new Course(localStorage.getItem(STORE.course) ?? DEFAULT_COURSE);
+let menu = PRESETS; // replaced by the files in configs/ once they have loaded
 
 const motor = new Motor(profile.params);
 const body = new Body(lab.body_width, lab.body_height);
@@ -57,11 +59,13 @@ const panel = new Panel(document.getElementById("panel"), {
     setParams(next);
   },
   onName(name) { profile.name = name; save(); },
-  onPreset(i) {
-    profile = { name: PRESETS[i].name, params: { ...PRESETS[i].params } };
+  onConfig(i) {
+    const config = menu[i];
+    profile = { name: config.name, params: { ...config.params } };
+    applyLab(config.lab);
     setParams(profile.params);
     panel.setName(profile.name);
-    note(`loaded preset: ${PRESETS[i].name}`);
+    note(`loaded config: ${config.name}`);
   },
   async onImport(file) {
     try {
@@ -73,6 +77,17 @@ const panel = new Panel(document.getElementById("panel"), {
       note(`imported ${file.name}`);
     } catch (e) {
       note(`could not read ${file.name}: ${e.message}`);
+    }
+  },
+  async onSave() {
+    const file = fileFor(profile.name, menu);
+    try {
+      const old = menu.find((c) => c.file === file);
+      const created = await saveConfig(file, { ...fileData(), note: old?.note });
+      await refreshConfigs();
+      note(`${created ? "created" : "updated"} configs/${file}`);
+    } catch (e) {
+      note(e.message);
     }
   },
   onExport() {
@@ -100,7 +115,8 @@ const panel = new Panel(document.getElementById("panel"), {
   },
 });
 
-panel.setPresets(PRESETS);
+panel.setConfigs(menu);
+refreshConfigs();
 panel.setStations(course.stations);
 panel.setName(profile.name);
 panel.setLab(lab);
@@ -113,6 +129,15 @@ function setParams(params) {
   panel.setParams(params);
   predictions = predictAll(params, 1 / lab.tick_rate);
   save();
+}
+
+async function refreshConfigs() {
+  const { configs, failed } = await loadConfigs();
+  if (configs.length) {
+    menu = configs;
+    panel.setConfigs(menu);
+  }
+  if (failed.length) note(`could not read configs/${failed.join(", configs/")}`);
 }
 
 function applyLab(changes = {}) {
@@ -382,10 +407,6 @@ async function copy(text) {
     // Clipboard API needs https or localhost; fall back to a prompt.
     window.prompt("Copy this:", text);
   }
-}
-
-function slug(s) {
-  return (s || "jump").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "jump";
 }
 
 function escapeHtml(s) {

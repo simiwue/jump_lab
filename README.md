@@ -14,6 +14,8 @@ take the numbers home as JSON.
 - **A course measured in cells:** floating ledges 3-10 high, gaps 2-10 wide, low
   ceilings, high ledges for the air jump, dash gaps, combo gaps. One unbroken floor and
   no pillars, so you cannot get boxed in. Paint your own with the mouse.
+- **Keep your configs.** **Save** writes the current values to `configs/`, and the
+  config menu lists everything in that folder.
 - **Engine-agnostic.** Export JSON with the parameters *and* the derived physics.
   `SPEC.md` describes the motor step by step; `spec/vectors.json` lets you check a port.
 
@@ -24,10 +26,12 @@ No build step, no dependencies: plain HTML, CSS and JavaScript modules.
 It has to be served over http (browsers do not load JS modules from `file://`):
 
 ```
-python3 -m http.server
+python3 server.py
 ```
 
-then open <http://localhost:8000>. Any static host works - GitHub Pages included.
+then open <http://localhost:8000>. `server.py` is a small file server that also lets
+the save button write to `configs/`; it needs only Python and answers on this machine
+only. Any static host runs the lab too, GitHub Pages included, but cannot save.
 
 ## Controls
 
@@ -64,6 +68,23 @@ then open <http://localhost:8000>. Any static host works - GitHub Pages included
 Import accepts a full file or a bare `params` object. Unknown keys are dropped and
 missing keys get their defaults, so old files keep loading as parameters are added.
 
+## Keeping configs
+
+`configs/` holds the JSON files listed in the config menu, starting with four ready-made
+ones. **Save** looks at the `name` box: if a config already goes by that name (inside
+the file or as its file name) it is replaced, with no undo; otherwise a new file is
+created. To branch off a config, change the name first, then save.
+
+You can also manage the folder by hand: drop in, rename or delete files and reload. The
+menu shows the file name. A file may hold only the keys that differ from the defaults,
+and an optional `note` becomes the menu tooltip (saving keeps it).
+
+The folder is read from the server's file listing, which `server.py` and
+`python3 -m http.server` both provide. Hosts without listings, such as GitHub Pages,
+need a `configs/index.json` naming the files
+(`["snappy.json", "floaty.json"]`); without one the menu falls back to the built-in
+copies in `js/presets.js`, which also supply the first-run default and the test vectors.
+
 ## Using the numbers in your game
 
 1. Port the motor (`js/motor.js`, ~250 lines, no dependencies) or follow `SPEC.md`.
@@ -90,7 +111,10 @@ js/body.js                 box-vs-grid collision for the lab
 js/course.js               course text format
 js/course_default.js       the default test course
 js/predict.js              offline simulation for the predicted arcs
-js/presets.js              starting points
+js/presets.js              built-in configs: first-run default, tests, fallback
+js/configs.js              loads and saves the configs/ folder
+server.py                  file server that can also save to configs/
+configs/                   the JSON files shown in the config menu
 js/panel.js, render.js, input.js, main.js   the lab itself
 tests/                     tests in the browser
 spec/vectors.json          golden trajectories for ports

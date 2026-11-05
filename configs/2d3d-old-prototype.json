@@ -1,0 +1,51 @@
+{
+  "format": "jump-lab/1",
+  "name": "2D3D (old prototype)",
+  "note": "The movement of the 2D3D prototype: instant control, a short blink dash. Designed as a 4.0 jump, but the old integration overshot to ~4.22 - 4.2 is what the old levels were actually played with.",
+  "units": {
+    "length": "cells",
+    "time": "seconds"
+  },
+  "params": {
+    "jump_distance": 5,
+    "ground_accel_time": 0,
+    "ground_decel_time": 0,
+    "air_accel_time": 0,
+    "air_decel_time": 0,
+    "jump_height": 4.2,
+    "jump_rise_time": 0.3,
+    "jump_fall_time": 0.3,
+    "jump_cut": 1,
+    "max_fall_speed": 80,
+    "apex_threshold": 0,
+    "apex_gravity_scale": 1,
+    "coyote_time": 0.07,
+    "jump_buffer_time": 0,
+    "air_jumps": 0,
+    "air_jump_height": 2.5,
+    "air_jump_rise_time": 0.25,
+    "air_jump_redirect": true,
+    "dash_enabled": true,
+    "dash_distance": 3,
+    "dash_time": 0.045,
+    "dash_cooldown": 0.8,
+    "air_dashes": 1,
+    "dash_lift": 2,
+    "dash_vertical_resume": 1,
+    "dash_exit_speed": 0,
+    "dash_jump_cancel": false,
+    "dash_jump_carry": 0.5,
+    "dash_refills_air_jumps": false,
+    "carry_decay_time": 0.2
+  },
+  "derived": {
+    "walk_speed": 8.3333,
+    "jump_speed": 28,
+    "rise_gravity": 93.3333,
+    "fall_gravity": 93.3333,
+    "air_jump_speed": 20,
+    "air_rise_gravity": 80,
+    "dash_speed": 66.6667
+  },
+  "lab": {}
+}

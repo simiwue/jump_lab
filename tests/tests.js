@@ -7,6 +7,7 @@ import { Course } from "../js/course.js";
 import { defaults, derive, toFile, fromFile } from "../js/profile.js";
 import { PRESETS } from "../js/presets.js";
 import { simulate, scenarios } from "../js/predict.js";
+import { jsonLinks, fileFor } from "../js/configs.js";
 import DEFAULT_COURSE from "../js/course_default.js";
 
 const results = [];
@@ -373,6 +374,27 @@ function vectors() {
   }
   return { format: "jump-lab-vectors/1", dt, params: Object.fromEntries(PRESETS.map((p) => [p.name, toFile(p.name, p.params).params])), cases: out };
 }
+test("config folder listing: finds the JSON files and nothing else", () => {
+  const html = `<a href="../">up</a><a href="zoom.json">z</a><a href="my%20jump.json">m</a>
+    <a href="/configs/abs.json">a</a><a href="index.json">i</a><a href="notes.txt">n</a>
+    <a href="old/deep.json">d</a><a href="/other/x.json">x</a><a href="zoom.json">again</a>`;
+  const names = jsonLinks(html, "http://localhost:8000/configs/");
+  ok(names.join() === "abs.json,my jump.json,zoom.json", names.join());
+});
+
+test("saving: a known name finds its file, a new name gets a new file", () => {
+  const configs = [
+    { file: "snappy.json", label: "snappy", name: "Snappy" },
+    { file: "my jump.json", label: "my jump", name: "Mine" },
+    { name: "built-in, not a file" },
+  ];
+  ok(fileFor("snappy", configs) === "snappy.json", "by name, any case");
+  ok(fileFor("Mine", configs) === "my jump.json", "by the name inside the file");
+  ok(fileFor(" My Jump ", configs) === "my jump.json", "by the file name");
+  ok(fileFor("Brand New + 2", configs) === "brand-new-2.json", "new file");
+  ok(fileFor("built-in, not a file", configs) === "built-in-not-a-file.json", "built-ins have no file");
+});
+
 const round = (v) => Math.round(v * 1e9) / 1e9;
 
 // --- report --------------------------------------------------------------------

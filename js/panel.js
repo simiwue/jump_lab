@@ -19,11 +19,11 @@ export class Panel {
     const head = el("section", "head");
     head.append(el("h1", "", "Jump Lab"));
 
-    const presetRow = el("div", "row");
-    this.preset = el("select");
-    this.preset.title = "Load a starting point";
-    presetRow.append(label("preset"), this.preset);
-    head.append(presetRow);
+    const configRow = el("div", "row");
+    this.config = el("select");
+    this.config.title = "Load a JSON file from the configs folder";
+    configRow.append(label("config"), this.config);
+    head.append(configRow);
 
     const nameRow = el("div", "row");
     this.name = el("input");
@@ -44,6 +44,7 @@ export class Panel {
     });
     fileRow.append(
       this.importInput,
+      button("save", () => this.h.onSave(), "Save to the configs folder: replaces the config with this name, or creates a new one"),
       button("import", () => this.importInput.click(), "Load a jump-lab JSON file"),
       button("export", () => this.h.onExport(), "Download the profile as JSON"),
       button("copy", () => this.h.onCopy(), "Copy the JSON to the clipboard"),
@@ -142,20 +143,20 @@ export class Panel {
     return row;
   }
 
-  setPresets(presets, selected = -1) {
-    this.preset.innerHTML = "";
-    this.preset.append(new Option("— choose —", -1));
-    presets.forEach((p, i) => {
-      const o = new Option(p.name, i);
-      o.title = p.note;
-      this.preset.append(o);
+  setConfigs(configs, selected = -1) {
+    this.config.innerHTML = "";
+    this.config.append(new Option("— choose —", -1));
+    configs.forEach((c, i) => {
+      const o = new Option(c.label ?? c.name, i);
+      o.title = c.note ?? "";
+      this.config.append(o);
     });
-    this.preset.value = selected;
-    this.preset.onchange = () => {
-      const i = Number(this.preset.value);
-      if (i >= 0) this.h.onPreset(i);
-      this.preset.value = -1;
-      this.preset.blur();
+    this.config.value = selected;
+    this.config.onchange = () => {
+      const i = Number(this.config.value);
+      if (i >= 0) this.h.onConfig(i);
+      this.config.value = -1;
+      this.config.blur();
     };
   }
 
