@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jump Lab — tune platformer jump physics</title>
+  <meta name="description" content="Tune the jump, double jump and dash of a platformer character in the browser, and export the numbers as JSON.">
+  <link rel="stylesheet" href="css/lab.css">
+</head>
+<body>
+  <canvas id="view"></canvas>
+
+  <div id="hint"></div>
+  <div id="controls">
+    <b>move</b> A D / ← → &nbsp; <b>jump</b> Space W ↑ K &nbsp; <b>dash</b> Shift J L &nbsp;
+    <b>station</b> 1–9 &nbsp; <b>restart</b> R &nbsp; <b>pin trace</b> P &nbsp; <b>zoom</b> wheel + − &nbsp; <b>panel</b> H
+    &nbsp;·&nbsp; gamepad: A jump, X dash
+  </div>
+  <pre id="readout"></pre>
+  <aside id="panel"></aside>
+  <div id="toast"></div>
+
+  <div id="no-modules" hidden>
+    Jump Lab has to be served over http, not opened as a file.<br>
+    Run <code>python3 -m http.server</code> in this folder and open
+    <a href="http://localhost:8000">http://localhost:8000</a>.
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+  <script>
+    // Browsers refuse ES modules from file:// - say so instead of showing nothing.
+    if (location.protocol === "file:") document.getElementById("no-modules").hidden = false;
+  </script>
+</body>
+</html>
